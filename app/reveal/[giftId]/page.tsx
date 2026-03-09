@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence, useAnimation } from 'framer-motion'
 import { useParams, useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { FiExternalLink, FiArrowLeft, FiMusic, FiVolumeX } from 'react-icons/fi'
 import { getTheme, type Theme } from '@/lib/themes'
 import type { GiftBoxWithLinks } from '@/lib/db'
