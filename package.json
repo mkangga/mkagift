@@ -3,13 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages@1",
-    "start": "next start",
-    "pages:build": "npx @cloudflare/next-on-pages@1",
-    "preview": "npm run pages:build && wrangler pages dev",
-    "db:setup": "node scripts/setup-db.js"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "start": "next start",
+  "pages:build": "npx @cloudflare/next-on-pages@1",
+  "db:setup": "node scripts/setup-db.js"
+},
   "dependencies": {
     "next": "^15.2.0",
     "react": "^18.3.1",
