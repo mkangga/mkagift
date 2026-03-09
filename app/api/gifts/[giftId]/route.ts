@@ -15,7 +15,7 @@ export async function GET(
       SELECT id, gift_id, sender_name, recipient_name, message, theme, created_at
       FROM gift_boxes
       WHERE gift_id = ${giftId}
-    `
+    `as any[]
 
     if (boxes.length === 0) {
       return NextResponse.json({ error: 'Gift not found' }, { status: 404 })
@@ -28,7 +28,7 @@ export async function GET(
       FROM gift_links
       WHERE gift_box_id = ${giftId}
       ORDER BY id ASC
-    `
+    `as any[]
 
     return NextResponse.json({ ...box, links })
   } catch (error) {
