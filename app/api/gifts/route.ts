@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
 
     const existing = await sql`
       SELECT id FROM gift_boxes WHERE gift_id = ${cleanGiftId}
-    `
+    ` as any[]
     if (existing.length > 0) {
       return NextResponse.json(
         { error: 'This Gift Box ID is already taken. Please choose another.' },
