@@ -1,35 +1,19 @@
 import { neon } from '@neondatabase/serverless'
 
-if (!process.env.DATABASE_URL) {
-  throw new Error('DATABASE_URL environment variable is not set')
+function getDb() {
+  const url = process.env.DATABASE_URL
+  if (!url) throw new Error('DATABASE_URL is not set')
+  return neon(url)
 }
 
-export const sql = neon(process.env.DATABASE_URL)
-
-export async function setupDatabase() {
-  await sql`
-    CREATE TABLE IF NOT EXISTS gift_boxes (
-      id SERIAL PRIMARY KEY,
-      gift_id VARCHAR(100) UNIQUE NOT NULL,
-      password_hash TEXT NOT NULL,
-      sender_name VARCHAR(255) NOT NULL,
-      recipient_name VARCHAR(255) NOT NULL,
-      message TEXT NOT NULL,
-      theme VARCHAR(50) NOT NULL DEFAULT 'romantic',
-      created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-    )
-  `
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS gift_links (
-      id SERIAL PRIMARY KEY,
-      gift_box_id VARCHAR(100) NOT NULL REFERENCES gift_boxes(gift_id) ON DELETE CASCADE,
-      title VARCHAR(255) NOT NULL,
-      url TEXT NOT NULL,
-      icon VARCHAR(50) DEFAULT 'gift'
-    )
-  `
-}
+export const sql = new Proxy({} as ReturnType<typeof neon>, {
+  get(_target, prop) {
+    return getDb()[prop as keyof ReturnType<typeof neon>]
+  },
+  apply(_target, _thisArg, args) {
+    return (getDb() as unknown as (...a: unknown[]) => unknown)(...args)
+  },
+}) as unknown as ReturnType<typeof neon>
 
 export type GiftBox = {
   id: number
