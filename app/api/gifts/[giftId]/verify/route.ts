@@ -21,7 +21,7 @@ export async function POST(
       SELECT id, gift_id, password_hash
       FROM gift_boxes
       WHERE gift_id = ${giftId}
-    `
+    `as any[]
 
     if (boxes.length === 0) {
       return NextResponse.json({ error: 'Gift Box ID not found' }, { status: 404 })
